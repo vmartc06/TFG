@@ -7,18 +7,28 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
     public function login(Request $request): RedirectResponse
     {
-        $credentials = $request->validate([
+        $validate = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'redirect_route_name' => 'sometimes|string'
         ]);
+
+        $redirectRouteName = $validate['redirect_route_name'] ?? "";
+        $credentials = $request->only('email', 'password');
+
+        Log::debug("Route name: $redirectRouteName");
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
+            if (!empty($redirectRouteName)) {
+                return redirect()->intended($redirectRouteName);
+            }
             return redirect()->intended('dashboard');
         }
 

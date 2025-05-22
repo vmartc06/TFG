@@ -22,6 +22,17 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
+                                @if (session('redirect_error'))
+                                    <div class="alert alert-warning">
+                                        {{ session('redirect_error') }}
+                                    </div>
+                                @endif
+
+                                @if(session('redirect_route_name'))
+                                    <input type="hidden" name="redirect_route_name"
+                                           value={{ session('redirect_route_name') }} />
+                                @endif
+
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required autofocus>
@@ -46,6 +57,6 @@
                 </div>
             </div>
         </div>
-        <script src="{{ asset('bootstrap/bootstrap.bundle.min.js') }}"></script>
+        <x-layout.scripts />
     </body>
 </html>

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Psy\Util\Json;
 use function Psy\debug;
@@ -20,7 +21,9 @@ class DevicesController extends Controller
     public function add(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:devices,name']
+            'name' => ['required', 'string', 'max:255', Rule::unique('devices')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id());
+            })],
         ]);
 
         $user = $request->user();
@@ -31,9 +34,34 @@ class DevicesController extends Controller
             'user_id' => $user->id
         ]);
 
-        return response()->json([
-            "enrollment_code" => $device->enrollment_code
+        $device->slots()->delete();
+        $device->info()->delete();
+        $device->api_key_encrypted = null;
+        $device->enrollment_code = self::generateEnrollmentCode();
+        $device->save();
+
+        $enrollmentData = $this->generateEnrollmentData($device->enrollment_code);
+
+        if (empty($enrollmentData)) {
+            return response()->json([], 500);
+        }
+
+        return response()->json($enrollmentData);
+    }
+
+    public function list(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'enrolled' => ['nullable', 'boolean']
         ]);
+
+        $user = $request->user();
+        $devices = Device::where('user_id', $user->id)->whereNotNull('enrollment_code');
+        if (isset($validated['enrolled']) && $validated['enrolled']) {
+            $devices = Device::where('user_id', $user->id)->whereNull('enrollment_code');
+        }
+
+        return response()->json($devices->get());
     }
 
     public function change(Request $request): JsonResponse
@@ -44,7 +72,9 @@ class DevicesController extends Controller
 
         $user = $request->user();
 
-        $device = Device::where('id', $validated['device_id'])->first();
+        $device = Device::where('id', $validated['device_id'])
+            ->where('user_id', $user->id)
+            ->first();
 
         if ($device->user_id != $user->id) {
             return response()->json([], 401);
@@ -56,9 +86,42 @@ class DevicesController extends Controller
         $device->enrollment_code = self::generateEnrollmentCode();
         $device->save();
 
-        return response()->json([
-            "enrollment_code" => $device->enrollment_code
-        ]);
+        $enrollmentData = $this->generateEnrollmentData($device->enrollment_code);
+
+        if (empty($enrollmentData)) {
+            return response()->json([], 500);
+        }
+
+        return response()->json($enrollmentData);
+    }
+
+    private function generateEnrollmentData(string $enrollmentCode): array
+    {
+        $appPath = public_path('app.apk');
+        if (!file_exists($appPath)) {
+            Log::error("Could not find the Device Owner app on $appPath");
+            return [];
+        }
+        $appHash = hash_file('sha256', $appPath, true);
+        $appChecksum = rtrim(strtr(base64_encode($appHash), '+/', '-_'), '=');
+
+        $appComponentName = env('APP_COMPONENT_NAME', null);
+        if ($appComponentName == null) {
+            Log::error("Could not find APP_COMPONENT_NAME in environment variable");
+            return [];
+        }
+
+        return [
+            "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME" => $appComponentName,
+            "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM" => $appChecksum,
+            "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION" => asset('app.apk'),
+            "android.app.extra.PROVISIONING_SKIP_ENCRYPTION" => "true",
+            "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED" => "true",
+            "android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE" => [
+                "server_url" => url('api/v1'),
+                "registration_code" => $enrollmentCode
+            ]
+        ];
     }
 
     public function delete(Request $request): Response | JsonResponse
@@ -69,7 +132,9 @@ class DevicesController extends Controller
 
         $user = $request->user();
 
-        $device = Device::where('id', $validated['device_id'])->first();
+        $device = Device::where('id', $validated['device_id'])
+            ->where('user_id', $user->id)
+            ->first();
 
         if ($device->user_id != $user->id) {
             return response()->json([], 401);
@@ -131,7 +196,8 @@ class DevicesController extends Controller
 
         $build = $validated['build'];
 
-        $device = Device::where('enrollment_code', $validated['enrollment_code'])->first();
+        $device = Device::where('enrollment_code', $validated['enrollment_code'])
+            ->first();
 
         $deviceInfo = [
             "board_name" => $build['board_name'],

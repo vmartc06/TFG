@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255)->unique();
+            $table->string('name', 255);
             $table->string('enrollment_code', 10)->nullable();
             $table->string('api_key_encrypted', 255)->unique()->nullable();
             $table->foreignId('user_id')->constrained()
                     ->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
+            $table->unique(['user_id', 'name']);
         });
     }
 

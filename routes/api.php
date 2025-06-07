@@ -12,7 +12,8 @@ Route::prefix('v1')->group(function() {
     Route::post('/devices/enroll', [DevicesController::class, 'enroll']);
 
     Route::middleware('auth:sanctum')->group(function() {
-        Route::post('/devices/add', [DevicesController::class, 'add']);
+        Route::get('/devices', [DevicesController::class, 'list'])->name('api.devices');
+        Route::post('/devices/add', [DevicesController::class, 'add'])->name('api.devices.add');
         Route::patch('/devices/change', [DevicesController::class, 'change']);
         Route::delete('/devices/delete', [DevicesController::class, 'delete']);
     });

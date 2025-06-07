@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Web\DashboardDevicesController;
+use App\Http\Controllers\Web\DashboardMainController;
+use App\Http\Controllers\Web\DevicesController;
 use App\Http\Controllers\Web\LoginController;
+use App\Http\Middleware\RedirectIfNoDevices;
 use App\Http\Middleware\RedirectIfNotAuthenticated;
 use Illuminate\Support\Facades\Route;
 
@@ -21,11 +25,14 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::middleware([RedirectIfNotAuthenticated::class])->group(function() {
-    Route::get('/dashboard', function () {
-        return view('protected/dashboard');
-    })->name('dashboard');
-    Route::get('/test', function () {
-        return view('protected/test');
-    })->name('test');
+    Route::middleware([RedirectIfNoDevices::class])->group(function() {
+        Route::get('/dashboard', [DashboardMainController::class, 'load'])
+            ->name('dashboard');
+        Route::get('/dashboard/devices', [DashboardDevicesController::class, 'load'])
+            ->name('dashboard.devices');
+    });
+
+    Route::get('/devices/add', [DevicesController::class, 'renderDeviceAdd'])
+        ->name('protected.devices.add');
 });
 

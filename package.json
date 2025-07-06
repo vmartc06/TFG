@@ -17,6 +17,7 @@
         "@yume-chan/adb": "^2.0.1",
         "@yume-chan/adb-credential-web": "2.0.1",
         "@yume-chan/adb-daemon-webusb": "^2.0.1",
-        "@yume-chan/android-bin": "^2.0.1"
+        "@yume-chan/android-bin": "^2.0.1",
+        "fs": "^0.0.1-security"
     }
 }

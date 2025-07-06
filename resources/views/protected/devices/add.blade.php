@@ -35,7 +35,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div id="step-1" class="tab-pane" role="tabpanel">
-                                    <div class="inner" style="display: none">
+                                    <div class="inner">
                                         <div class="form-row">
                                             <div class="form-holder form-holder-2">
                                                 <label for="device-name">Put a name to your device</label>
@@ -48,6 +48,23 @@
                                             <button id="btn-step-1b-next" type="button" class="btn btn-outline-primary">Manual setup</button>
                                         </div>
                                     </div>
+                                </div>
+                                <div id="step-2" class="tab-pane" role="tabpanel">
+                                    <div class="inner">
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2 w-100 text-center">
+                                                <label>Scan this QR code on your device</label>
+                                                <div class="d-flex justify-content-center mt-3">
+                                                    <div id="qrcode"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <button id="btn-step-2-next" type="button" class="btn btn-primary">Next</button>
+                                    </div>
+                                </div>
+                                <div id="step-3" class="tab-pane" role="tabpanel">
                                     <div class="inner">
                                         <div class="form-row justify-content-center mb-4">
                                             <div class="col text-center">
@@ -89,30 +106,6 @@
                                                 </ul>
 
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="step-2" class="tab-pane" role="tabpanel">
-                                    <div class="inner">
-                                        <div class="form-row">
-                                            <div class="form-holder form-holder-2 w-100 text-center">
-                                                <label>Scan this QR code on your device</label>
-                                                <div class="d-flex justify-content-center mt-3">
-                                                    <div id="qrcode"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center mt-3">
-                                        <button id="btn-step-2-next" type="button" class="btn btn-primary">Next</button>
-                                    </div>
-                                </div>
-                                <div id="step-3" class="tab-pane" role="tabpanel">
-                                    <div class="inner">
-                                        <span>Select a device</span>
-                                        <span>Device selected: <span id="device-selected-name"></span> </span>
-                                        <div class="setup-buttons d-flex flex-column flex-md-row justify-content-center align-items-center mt-3 gap-3">
-                                            <button id="btn-step-3-next" type="button" class="btn btn-outline-primary" style="display: none">Next</button>
                                         </div>
                                     </div>
                                 </div>

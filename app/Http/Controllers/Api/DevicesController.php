@@ -31,13 +31,9 @@ class DevicesController extends Controller
         $device = Device::create([
             'name' => $validated['name'],
             'enrollment_code' => self::generateEnrollmentCode(),
+            'api_key_encrypted' => null,
             'user_id' => $user->id
         ]);
-
-        $device->slots()->delete();
-        $device->info()->delete();
-        $device->api_key_encrypted = null;
-        $device->enrollment_code = self::generateEnrollmentCode();
         $device->save();
 
         $enrollmentData = $this->generateEnrollmentData($device->enrollment_code);
@@ -105,7 +101,7 @@ class DevicesController extends Controller
         $appHash = hash_file('sha256', $appPath, true);
         $appChecksum = rtrim(strtr(base64_encode($appHash), '+/', '-_'), '=');
 
-        $appComponentName = env('APP_COMPONENT_NAME', null);
+        $appComponentName = config('envs.APP_COMPONENT_NAME');
         if ($appComponentName == null) {
             Log::error("Could not find APP_COMPONENT_NAME in environment variable");
             return [];

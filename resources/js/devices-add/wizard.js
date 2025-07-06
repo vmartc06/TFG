@@ -66,12 +66,6 @@ $(function () {
             const wizard = $('#smartwizard')
             wizard.smartWizard("next");
             wizard.smartWizard("next");
-            step3(-1)
-            enrollDevice().then(() => {
-                console.log("ENROLLED")
-            }).catch(error => {
-                showError(error);
-            })
         }).catch(error => {
             showError(error);
         })

@@ -9,6 +9,8 @@
         <x-dashboard.fonts />
         <link rel="stylesheet" href="{{ asset('views/dashboard/css/ready.css') }}" />
         <link rel="stylesheet" href="{{ asset('views/dashboard/css/demo.css') }}" />
+        <!-- Map -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         {{ $css ?? "" }}
     </head>
     <body>
@@ -35,7 +37,11 @@
         <script src="{{ asset('views/dashboard/js/plugin/chart-circle/circles.min.js') }}"></script>
         <script src="{{ asset('views/dashboard/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
         <script src="{{ asset('views/dashboard/js/ready.min.js') }}"></script>
-        <script src="{{ asset('views/dashboard/js/demo.js') }}"></script>
+        <script src="{{ asset('views/dashboard/js/main.js') }}"></script>
+        <!-- Map -->
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>let customPinURL = "{{ asset('views/dashboard/img/phone-icon.svg') }}"</script>
         {{ $scripts ?? "" }}
     </body>
 </html>

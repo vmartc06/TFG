@@ -30,8 +30,17 @@ Route::middleware([RedirectIfNotAuthenticated::class])->group(function() {
     Route::middleware([RedirectIfNoDevices::class])->group(function() {
         Route::get('/dashboard', [DashboardMainController::class, 'load'])
             ->name('dashboard');
+        Route::get('/dashboard/apps', [DashboardDevicesController::class, 'load'])
+            ->name('dashboard.appManagement');
+        Route::get('/dashboard/remote', [DashboardDevicesController::class, 'load'])
+            ->name('dashboard.remoteControl');
+        Route::get('/dashboard/templates', [DashboardDevicesController::class, 'load'])
+            ->name('dashboard.templateManagement');
+        Route::get('/dashboard/device', [DashboardDevicesController::class, 'load'])
+            ->name('dashboard.device');
         Route::get('/dashboard/devices', [DashboardDevicesController::class, 'load'])
             ->name('dashboard.devices');
+
     });
 
     Route::get('/devices/add', [DevicesController::class, 'renderDeviceAdd'])

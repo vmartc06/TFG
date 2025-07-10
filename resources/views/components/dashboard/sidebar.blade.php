@@ -36,15 +36,53 @@
                 <li class="nav-item {{ $dashboardActive }}">
                     <a href="{{ route('dashboard') }}">
                         <i class="la la-dashboard"></i>
-                        <p>Dashboard</p>
-                        <span class="badge badge-count">5</span>
+                        <p>Principal</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ $templateManagementActive }}">
+                    <a href="{{ route('dashboard.templateManagement') }}">
+                        <img
+                                src="{{ asset('views/dashboard/img/manage-templates-icon.png') }}"
+                                alt="Dashboard"
+                                style="width: 25px; height: 23px; margin-right: 8px;"
+                        />
+                        <p>Gestionar plantillas</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ $appManagementActive }}">
+                    <a href="{{ route('dashboard.appManagement') }}">
+                        <img
+                            src="{{ asset('views/dashboard/img/manage-apps-icon.png') }}"
+                            alt="Dashboard"
+                            style="width: 25px; height: 23px; margin-right: 8px;"
+                        />
+                        <p>Gestionar apps</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ $remoteControlActive }}">
+                    <a href="{{ route('dashboard.remoteControl') }}">
+                        <img
+                            src="{{ asset('views/dashboard/img/remote-control-icon.png') }}"
+                            alt="Dashboard"
+                            style="width: 25px; height: 23px; margin-right: 8px;"
+                        />
+                        <p>Control remoto</p>
                     </a>
                 </li>
                 <li class="nav-item {{ $devicesActive }}">
                     <a href="{{ route('dashboard.devices') }}">
+                        <img
+                            src="{{ asset('views/dashboard/img/manage-devices-icon.png') }}"
+                            alt="Dashboard"
+                            style="width: 25px; height: 23px; margin-right: 8px;"
+                        />
+                        <p>Gestionar dispositivos</p>
+                    </a>
+                </li>
+                <li class="nav-item {{ $deviceActive }}">
+                    <a href="{{ route('dashboard.device') }}">
                         <i class="la la-mobile"></i>
-                        <p>Devices</p>
-                        <span class="badge badge-count">14</span>
+                        <p>Mi dispositivo</p>
                     </a>
                 </li>
             </ul>

@@ -13,6 +13,10 @@ use Illuminate\View\ComponentAttributeBag;
 class Sidebar extends Component
 {
     public string $dashboardActive;
+    public string $appManagementActive;
+    public string $remoteControlActive;
+    public string $templateManagementActive;
+    public string $deviceActive;
     public string $devicesActive;
 
     private Collection $devices;
@@ -31,6 +35,10 @@ class Sidebar extends Component
     private function setupActiveMenu(string $activeMenu): void
     {
         $this->dashboardActive = "";
+        $this->templateManagementActive = "";
+        $this->appManagementActive = "";
+        $this->remoteControlActive = "";
+        $this->deviceActive = "";
         $this->devicesActive = "";
 
         switch ($activeMenu)
@@ -38,8 +46,20 @@ class Sidebar extends Component
             case 'dashboard':
                 $this->dashboardActive = 'active';
                 break;
+            case 'template-management':
+                $this->templateManagementActive = 'active';
+                break;
+            case 'app-management':
+                $this->appManagementActive = 'active';
+                break;
+            case 'remote-control':
+                $this->remoteControlActive = 'active';
+                break;
             case 'devices':
                 $this->devicesActive = 'active';
+                break;
+            case 'device':
+                $this->deviceActive = 'active';
                 break;
         }
     }
@@ -74,7 +94,11 @@ class Sidebar extends Component
     {
         return view('components.dashboard.sidebar', [
             'dashboardActive' => $this->dashboardActive,
+            'templateManagementActive' => $this->templateManagementActive,
+            'appManagementActive' => $this->appManagementActive,
+            'remoteControlActive' => $this->remoteControlActive,
             'devicesActive' => $this->devicesActive,
+            'deviceActive' => $this->deviceActive,
             'devices' => $this->devices,
             'activeDevice' => $this->activeDevice,
             'activeDeviceDisplayModel' => $this->activeDeviceDisplayModel

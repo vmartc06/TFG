@@ -78,6 +78,7 @@ class Sidebar extends Component
                 }
             }
         }
+
         if ($this->activeDevice->info == null) {
             $this->activeDeviceDisplayModel = "Unenrolled";
         } else {

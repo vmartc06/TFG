@@ -38,4 +38,11 @@ class Device extends Model
     {
         return $this->hasOne(DeviceInfo::class);
     }
+
+    // Custom methods
+
+    public function isEnrolled(): bool
+    {
+        return ($this->enrollment_code == null) && ($this->info != null);
+    }
 }

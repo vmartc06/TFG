@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Web\DashboardDevicesController;
-use App\Http\Controllers\Web\DashboardMainController;
-use App\Http\Controllers\Web\DevicesController;
+use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\DevicesWizardController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Middleware\RedirectIfNoDevices;
 use App\Http\Middleware\RedirectIfNotAuthenticated;
@@ -28,22 +28,22 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware([RedirectIfNotAuthenticated::class])->group(function() {
     Route::middleware([RedirectIfNoDevices::class])->group(function() {
-        Route::get('/dashboard', [DashboardMainController::class, 'load'])
+        Route::get('/dashboard', [DashboardController::class, 'main'])
             ->name('dashboard');
-        Route::get('/dashboard/apps', [DashboardDevicesController::class, 'load'])
+        Route::get('/dashboard/apps', [DashboardController::class, 'apps'])
             ->name('dashboard.appManagement');
-        Route::get('/dashboard/remote', [DashboardDevicesController::class, 'load'])
+        Route::get('/dashboard/remote', [DashboardController::class, 'remote'])
             ->name('dashboard.remoteControl');
-        Route::get('/dashboard/templates', [DashboardDevicesController::class, 'load'])
+        Route::get('/dashboard/templates', [DashboardController::class, 'templates'])
             ->name('dashboard.templateManagement');
-        Route::get('/dashboard/device', [DashboardDevicesController::class, 'load'])
+        Route::get('/dashboard/device', [DashboardController::class, 'device'])
             ->name('dashboard.device');
-        Route::get('/dashboard/devices', [DashboardDevicesController::class, 'load'])
+        Route::get('/dashboard/devices', [DashboardController::class, 'devices'])
             ->name('dashboard.devices');
 
     });
 
-    Route::get('/devices/add', [DevicesController::class, 'renderDeviceAdd'])
+    Route::get('/devices/add', [DevicesWizardController::class, 'renderDeviceAdd'])
         ->name('protected.devices.add');
 });
 

@@ -49,4 +49,29 @@ class DeviceInfo extends Model
         'device_id' => 'integer'
     ];
 
+    // Custom methods
+
+    public function getAndroidVersion(): string
+    {
+        return match ((int)$this->android_build_sdk) {
+            36 => '16',
+            35 => '15',
+            34 => '14',
+            33 => '13',
+            32 => '12L',
+            31 => '12',
+            30 => '11',
+            29 => '10',
+            28 => '9',
+            27 => '8.1',
+            26 => '8.0',
+            25 => '7.1',
+            24 => '7.0',
+            23 => '6.0',
+            22 => '5.1',
+            21 => '5.0',
+            default => 'Unknown',
+        };
+    }
+
 }

@@ -4,83 +4,78 @@
     <div class="main-panel">
         <div class="content">
             <div class="container-fluid">
-                <h4 class="page-title">Devices</h4>
+                <h4 class="page-title">Dispositivos</h4>
                 <div class="row">
                     <div class="col-md">
-
                         <div class="card" id="devices-list">
                             <div class="card-header">
-                                <h4 class="card-title">Devices list</h4>
+                                <h4 class="card-title">Dispositivos enlazados</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Brand</th>
-                                                <th scope="col">Model</th>
-                                                <th scope="col">Android SDK Version</th>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Marca</th>
+                                                <th scope="col">Modelo</th>
+                                                <th scope="col">Versión de Android</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($devices as $device)
-                                            <tr>
-                                                <td>{{ $device->name }}</td>
-                                                @if($device->info != null)
+                                                @if($device->isEnrolled())
+                                                <tr>
+                                                    <td>{{ $device->name }}</td>
                                                     <td>{{ $device->info->brand }}</td>
                                                     <td>{{ $device->info->model }}</td>
-                                                    <td>{{ $device->info->andorid_build_sdk }}</td>
-                                                @else
-                                                    <td colspan="3">Unregistered</td>
+                                                    <td>{{ $device->info->getAndroidVersion() }}</td>
+                                                </tr>
                                                 @endif
-                                            </tr>
                                             @endforeach
+                                            @if(!empty($devices))
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <button class="btn btn-primary">Agregar dispositivo</button>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
 
-
                         <div class="card" id="device-add-form-container">
                             <div class="card-header">
-                                <h4 class="card-title">Add a device</h4>
+                                <h4 class="card-title">Dispositivos no enlazados</h4>
                             </div>
                             <div class="card-body">
-
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($devices as $device)
+                                            @if(!$device->isEnrolled())
+                                                <tr>
+                                                    <td>{{ $device->name }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://www.themekita.com">
-                                ThemeKita
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Help
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://themewagon.com/license/#free-item">
-                                Licenses
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="copyright ml-auto">
-                    2018, made with <i class="la la-heart heart text-danger"></i> by <a href="http://www.themekita.com">ThemeKita</a>
-                </div>
-            </div>
-        </footer>
+        <x-dashboard.footer />
     </div>
     <x-slot name="scripts">
         <script src="{{ asset('views/dashboard-devices/js/adb.js') }}"></script>

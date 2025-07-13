@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class DevicesController extends Controller
+class DevicesWizardController extends Controller
 {
     public function renderDeviceAdd(Request $request): View|Closure|string
     {

@@ -34,13 +34,13 @@
             </div>
             <ul class="nav">
                 <li class="nav-item {{ $dashboardActive }}">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('dashboard', ['device' => $activeDevice->id]) }}">
                         <i class="la la-dashboard"></i>
                         <p>Principal</p>
                     </a>
                 </li>
                 <li class="nav-item {{ $templateManagementActive }}">
-                    <a href="{{ route('dashboard.templateManagement') }}">
+                    <a href="{{ route('dashboard.templateManagement', ['device' => $activeDevice->id]) }}">
                         <img
                                 src="{{ asset('views/dashboard/img/manage-templates-icon.png') }}"
                                 alt="Dashboard"
@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item {{ $appManagementActive }}">
-                    <a href="{{ route('dashboard.appManagement') }}">
+                    <a href="{{ route('dashboard.appManagement', ['device' => $activeDevice->id]) }}">
                         <img
                             src="{{ asset('views/dashboard/img/manage-apps-icon.png') }}"
                             alt="Dashboard"
@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li class="nav-item {{ $remoteControlActive }}">
-                    <a href="{{ route('dashboard.remoteControl') }}">
+                    <a href="{{ route('dashboard.remoteControl', ['device' => $activeDevice->id]) }}">
                         <img
                             src="{{ asset('views/dashboard/img/remote-control-icon.png') }}"
                             alt="Dashboard"
@@ -70,7 +70,7 @@
                     </a>
                 </li>
                 <li class="nav-item {{ $devicesActive }}">
-                    <a href="{{ route('dashboard.devices') }}">
+                    <a href="{{ route('dashboard.devices', ['device' => $activeDevice->id]) }}">
                         <img
                             src="{{ asset('views/dashboard/img/manage-devices-icon.png') }}"
                             alt="Dashboard"
@@ -80,7 +80,7 @@
                     </a>
                 </li>
                 <li class="nav-item {{ $deviceActive }}">
-                    <a href="{{ route('dashboard.device') }}">
+                    <a href="{{ route('dashboard.device', ['device' => $activeDevice->id]) }}">
                         <i class="la la-mobile"></i>
                         <p>Mi dispositivo</p>
                     </a>
